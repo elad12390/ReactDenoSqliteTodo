@@ -1,1 +1,3 @@
-.TodoItem {}
+.TodoItem .finished {
+    text-decoration: line-through;
+}

@@ -4,11 +4,17 @@ import { App } from './App/App';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter as Router} from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import axios from 'axios';
 
+const queryClient = new QueryClient();
+axios.defaults.baseURL='http://localhost:8000'
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')

@@ -1,6 +1,6 @@
 import { Router } from 'https://deno.land/x/oak@v7.7.0/router.ts';
 
-export async function addRoutes(router: Router) {
+export async function addRoutes(router: any) {
 	for await (const directory of Deno.readDir('./routes')) {
 		if (directory.isFile) continue;
 		for await (const dirEntry of Deno.readDir('./routes/' + directory.name)) {

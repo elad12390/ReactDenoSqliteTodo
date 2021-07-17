@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import './App.scss';
-import {Link, Route, Switch, useHistory} from 'react-router-dom';
+import { Route, Switch, useHistory} from 'react-router-dom';
 import Home from './Routes/Home/Home';
 import Todos from './Routes/Todos/Todos';
-import { AppBar, Button, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@material-ui/core';
-import HomeIcon from '@material-ui/icons/Home';
-import ListIcon from '@material-ui/icons/List';
-import MenuIcon from '@material-ui/icons/Menu';
-import AppleIcon from '@material-ui/icons/Apple';
+import AppLayout, { IAppLayoutProps } from './Components/AppLayout/AppLayout';
 
-interface RouteDefinition {
+
+export interface AppRouteDefinition {
   name: string;
   path: string;
 }
 
 export const App = () => {
   const history = useHistory();
-  const routes: RouteDefinition[] = [
+  const routes: AppRouteDefinition[] = [
     {
       name: 'Home',
       path: '/'
@@ -32,32 +29,15 @@ export const App = () => {
   }
   const [currentPath, setCurrentPath] = useState('Home');
 
+  const appLayoutProps: IAppLayoutProps = {
+    currentPath,
+    handleLinkClick,
+    routes
+  }
+
   return (
     <div className="App">
-    <AppBar className="top-bar" position="sticky">
-      <Toolbar>
-        <Typography variant="h6">
-          {currentPath}
-        </Typography>
-      </Toolbar>
-    </AppBar>
-    <Drawer
-        className="drawer"
-        variant="permanent"
-        anchor="left"
-      >
-        <List>
-          <ListItem>
-                <ListItemIcon><AppleIcon /></ListItemIcon>
-            </ListItem>
-          {routes.map(({name, path}, index) => (
-            <ListItem button key={name} onClick={() => handleLinkClick(name, path)}>
-                <ListItemIcon>{index % 2 === 0 ? <HomeIcon /> : <ListIcon />}</ListItemIcon>
-                <ListItemText primary={name} />
-            </ListItem>
-          ))}
-        </List>
-    </Drawer>
+    <AppLayout {...appLayoutProps}/>
     <Switch>
       <div className="main">
         <Route exact path="/">

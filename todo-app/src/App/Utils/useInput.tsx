@@ -5,6 +5,10 @@ export interface IOnChangeInputHookBind<T> {
   onChange: any;
 }
 
+export interface IOnChangeCheckboxHookBind<T> {
+  checked: T;
+  onChange: any;
+}
 
 export interface IOnClickInputHookBind {
   onClick: any;
@@ -14,7 +18,7 @@ export interface IUseInputHook<T> {
 	value: T;
 	setValue: any;
 	reset: any;
-	bind: IOnChangeInputHookBind<T> | IOnClickInputHookBind;
+	bind: IOnChangeCheckboxHookBind<T> | IOnChangeInputHookBind<T> | IOnClickInputHookBind;
 }
 
 export enum EInputType {
@@ -32,23 +36,12 @@ export interface IUseInputHookOptions<T> {
 export function useInput<T>(type: EInputType, options?: IUseInputHookOptions<T>): IUseInputHook<T> {
   const initVal = !!options?.initialValue ? options?.initialValue : getDefaultInputInitialState(type);
   const [value, setValue] = useState(initVal) as [value: any, setValue: any];
-
+  const bind = getBindByType<T>(type, value, setValue, options);
   return {
     value,
     setValue,
     reset: () => setValue(initVal),
-    bind: type !== EInputType.button ? {
-      value,
-      'onChange': (event: any) => {
-        const currValue: T = getInputValue(type, event);
-        options?.onChange?.call(null, currValue);
-        setValue(currValue);
-      }
-    } : {
-      'onClick': (event: any) => {
-        options?.onClick?.call(null, event);
-      }
-    }
+    bind
   };
 };
 
@@ -71,5 +64,34 @@ const getDefaultInputInitialState = (type: EInputType) => {
       return '';
     case EInputType.checkbox:
       return false;
+  }
+}
+
+function getBindByType<T>(type: EInputType, value: T, setValue: any, options?: IUseInputHookOptions<T>) {
+  switch(type) {
+    case EInputType.button:
+      return {
+        'onClick': (event: any) => {
+          options?.onClick?.call(null, event);
+        }
+      };
+    case EInputType.text:
+      return {
+        value,
+        'onChange': (event: any) => {
+          const currValue: T = getInputValue(type, event);
+          options?.onChange?.call(null, currValue);
+          setValue(currValue);
+        }
+      };
+    case EInputType.checkbox:
+      return {
+        checked: value,
+        'onChange': (event: any) => {
+          const currValue: T = getInputValue(type, event);
+          options?.onChange?.call(null, currValue);
+          setValue(currValue);
+        }
+      };
   }
 }

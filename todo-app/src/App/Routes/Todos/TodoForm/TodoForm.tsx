@@ -14,8 +14,8 @@ const TodoForm = () => {
 
   return <div className={styles.TodoForm}>
     <form>
-      <Input {...textInputHook.bind} id="todoText" aria-describedby="The text description of the todo" />
-      <Checkbox {...isFinishedInputHook.bind} id="todoText" aria-describedby="The text description of the todo" />
+      <Input {...textInputHook.bind} aria-describedby="The text description of the todo" />
+      <Checkbox {...isFinishedInputHook.bind} aria-describedby="The text description of the todo" />
       <Button {...submitInputHook.bind as IOnClickInputHookBind}>Submit Todo</Button>
     </form>
   </div>

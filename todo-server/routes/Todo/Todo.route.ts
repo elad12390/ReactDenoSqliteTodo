@@ -35,8 +35,10 @@ export const create = (basePath: string, router: Router) => {
   })
   .put(basePath + '/', (ctx: RouterContext) => {
     const body = ctx.request.body({type: 'json'});
+    console.log('requested update todo');
     body.value.then((val: ITodoItem) => {
       todoDB.updateTodo(val);
+      ctx.response.body = true;
     });
   })
   .delete(basePath + '/:id', (ctx: RouterContext) => {
