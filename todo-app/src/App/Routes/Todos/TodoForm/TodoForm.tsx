@@ -1,16 +1,27 @@
 import { Button, Checkbox, Input } from '@material-ui/core';
+import axios from 'axios';
 import React from 'react';
+import { useMutation } from 'react-query';
 import { EInputType, IOnClickInputHookBind, IUseInputHook, useInput } from '../../../Utils/useInput';
+import { ITodoItem } from '../todo.models';
 import styles from './TodoForm.module.scss';
 
-const TodoForm = () => {
+export interface TodoFormParams {
+  updateTable: Function;
+}
+
+const TodoForm = ({updateTable}: TodoFormParams) => {
   const textInputHook: IUseInputHook<string> = useInput(EInputType.text);
   const isFinishedInputHook: IUseInputHook<boolean> = useInput(EInputType.checkbox);
   const submitInputHook: IUseInputHook<boolean> = useInput(EInputType.button, {
-    onClick: () => {
-      
+    onClick: async () => {
+      await postMutation.mutateAsync({todo: textInputHook.value, isFinished: +isFinishedInputHook.value});
+      updateTable();
+      textInputHook.reset();
+      isFinishedInputHook.reset();
     }
   });
+  const postMutation = useMutation((newTodo: ITodoItem) => axios.post('/todo/', newTodo));
 
   return <div className={styles.TodoForm}>
     <form>

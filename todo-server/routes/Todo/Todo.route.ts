@@ -2,6 +2,7 @@ import { RouteParams, Router, RouterContext } from 'https://deno.land/x/oak@v7.7
 import { DB } from "https://deno.land/x/sqlite/mod.ts";
 import { TodoDB } from "../../DB/todo/todo.ts";
 import { ITodoItem } from "../../DB/todo/todo.dbmodel.ts";
+import { Status } from "https://deno.land/std@0.99.0/http/http_status.ts";
 
 const todos = new Map<string, any>();
 todos.set('1', {
@@ -31,7 +32,9 @@ export const create = (basePath: string, router: Router) => {
     const body = ctx.request.body({type: 'json'});
     body.value.then((val: ITodoItem) => {
       todoDB.createTodo(val);
+      ctx.response.status = Status.OK;
     });
+    
   })
   .put(basePath + '/', (ctx: RouterContext) => {
     const body = ctx.request.body({type: 'json'});
@@ -46,6 +49,7 @@ export const create = (basePath: string, router: Router) => {
       const idNum = Number(ctx.params.id);
       if (idNum) {
         todoDB.deleteTodo(idNum);
+        ctx.response.status = Status.OK;
       }
     }
   })
