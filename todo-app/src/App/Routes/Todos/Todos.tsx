@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React from 'react';
 import { useQuery } from 'react-query';
+import { TodoList } from './Components/TodoList/TodoList';
 import { ITodoItem } from './todo.models';
-import TodoForm from './TodoForm/TodoForm';
-import TodoItem from './TodoItem/TodoItem';
+import NewTodoForm from './Components/TodoForm/NewTodoForm';
 import styles from './Todos.module.scss';
+import { CircularProgress } from '@material-ui/core';
 
 
 
@@ -15,12 +16,12 @@ const Todos = () => {
 
   return (
     <div className={styles.Todos}>
-      {data?.map((todo) => (
-        <div key={'todoItem_'+todo.id}>
-          <TodoItem updateTable={refetch} todo={todo}/>
-        </div>
-      ))}
-      <TodoForm updateTable={refetch}/>
+      <div className={styles.ContentWrapper}>
+        {isLoading ? <CircularProgress /> : <>
+          <TodoList data={data} refetch={refetch} />
+          <NewTodoForm updateTable={refetch} />
+        </>}
+      </div>
     </div>
   );
 };

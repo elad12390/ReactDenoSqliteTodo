@@ -4,13 +4,6 @@ import { TodoDB } from "../../DB/todo/todo.ts";
 import { ITodoItem } from "../../DB/todo/todo.dbmodel.ts";
 import { Status } from "https://deno.land/std@0.99.0/http/http_status.ts";
 
-const todos = new Map<string, any>();
-todos.set('1', {
-  id: '1',
-  title: 'The Hound of the Baskervilles',
-  author: 'Conan Doyle, Arthur',
-});
-
 export const create = (basePath: string, router: Router) => {
   // create db
   const todoDB = new TodoDB();
@@ -21,7 +14,7 @@ export const create = (basePath: string, router: Router) => {
     ctx.response.body = todoDB.getTodos();
   })
   .get(basePath + '/:id', (ctx: RouterContext) => {
-    if (ctx.params && ctx.params.id && todos.has(ctx.params.id)) {
+    if (ctx.params && ctx.params.id) {
       const idNum = Number(ctx.params.id);
       if (idNum) {
         ctx.response.body = todoDB.getTodo(idNum);

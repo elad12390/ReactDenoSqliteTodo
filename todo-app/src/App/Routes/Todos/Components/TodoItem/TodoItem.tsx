@@ -3,8 +3,8 @@ import Input from '@material-ui/core/Input';
 import axios from 'axios';
 import React from 'react';
 import { useQueryClient, useQuery, useMutation } from 'react-query';
-import { EInputType, IOnClickInputHookBind, IUseInputHook, useInput } from '../../../Utils/useInput';
-import { ITodoItem } from '../todo.models';
+import { EInputType, IOnClickInputHookBind, IUseInputHook, useInput } from '../../../../Utils/useInput';
+import { ITodoItem } from '../../todo.models';
 import styles from './TodoItem.module.scss';
 import DeleteIcon from '@material-ui/icons/Delete';
 

@@ -2,15 +2,15 @@ import { Button, Checkbox, Input } from '@material-ui/core';
 import axios from 'axios';
 import React from 'react';
 import { useMutation } from 'react-query';
-import { EInputType, IOnClickInputHookBind, IUseInputHook, useInput } from '../../../Utils/useInput';
-import { ITodoItem } from '../todo.models';
+import { EInputType, IOnClickInputHookBind, IUseInputHook, useInput } from '../../../../Utils/useInput';
+import { ITodoItem } from '../../todo.models';
 import styles from './TodoForm.module.scss';
 
-export interface TodoFormParams {
+export interface ITodoFormParams {
   updateTable: Function;
 }
 
-const TodoForm = ({updateTable}: TodoFormParams) => {
+const NewTodoForm = ({updateTable}: ITodoFormParams) => {
   const textInputHook: IUseInputHook<string> = useInput(EInputType.text);
   const isFinishedInputHook: IUseInputHook<boolean> = useInput(EInputType.checkbox);
   const submitInputHook: IUseInputHook<boolean> = useInput(EInputType.button, {
@@ -32,4 +32,4 @@ const TodoForm = ({updateTable}: TodoFormParams) => {
   </div>
 };
 
-export default TodoForm;
+export default NewTodoForm;
